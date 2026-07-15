@@ -12,3 +12,31 @@ Tech Stack Portfolio is a web application that allows developers to organize, ma
 
 ## Reason for Selection
 It solves a real-world problem that many developers face: organizing and presenting their work professionally. It also aligns well with the course requirements by providing opportunities to implement authentication, CRUD operations, file uploads, database integration, and reusable UI components while creating a portfolio that can be used beyond the course.
+
+## MVP Features
+
+- User authentication (Sign up, Login, Logout)
+- Create, read, update, and delete software projects
+- Technology stack tags for each project
+- Upload project screenshots
+- Portfolio dashboard
+- Responsive design
+
+## Tech Stack
+
+- Next.js (App Router)
+- React
+- TypeScript
+- Tailwind CSS
+- Supabase (Authentication, PostgreSQL, Storage)
+
+## Project Structure
+
+```text
+app/
+components/
+lib/
+types/
+public/
+docs/
+```
