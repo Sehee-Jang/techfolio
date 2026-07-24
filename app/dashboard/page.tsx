@@ -1,13 +1,23 @@
-export default function DashboardPage() {
-  return (
-    <main className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold">
-        Dashboard
-      </h1>
+import { redirect } from "next/navigation";
 
-      <p className="mt-2 text-muted-foreground">
-        You are successfully logged in.
-      </p>
+import { createServerSupabaseClient } from "@/lib/supabase-server";
+
+export default async function DashboardPage() {
+  const supabase = await createServerSupabaseClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  return (
+    <main className='container mx-auto max-w-7xl p-6'>
+      <h1 className='text-3xl font-bold'>Dashboard</h1>
+
+      <p className='mt-2 text-muted-foreground'>Welcome, {user.email}</p>
     </main>
   );
 }
