@@ -30,6 +30,11 @@ It solves a real-world problem that many developers face: organizing and present
 - Tailwind CSS
 - Supabase (Authentication, PostgreSQL, Storage)
 
+## Database
+
+- Supabase PostgreSQL
+- Supabase Auth
+
 ## Project Structure
 
 ```text
