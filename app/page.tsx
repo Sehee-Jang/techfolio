@@ -1,23 +1,7 @@
-import ProjectGrid from "@/components/project/ProjectGrid";
-
 export const metadata = {
   title: "Home",
 };
 
-const projects = [
-  {
-    id: "1",
-    title: "Techfolio",
-    description: "A portfolio application for developers.",
-    technologies: ["Next.js", "TypeScript", "Tailwind"],
-  },
-  {
-    id: "2",
-    title: "Wedding Invitation",
-    description: "A mobile wedding invitation project.",
-    technologies: ["React", "Supabase"],
-  },
-];
 
 export default function Home() {
   return (
@@ -29,8 +13,6 @@ export default function Home() {
           Showcase your development projects.
         </p>
       </section>
-
-      <ProjectGrid projects={projects} />
     </main>
   );
 }
