@@ -1,8 +1,12 @@
 import RegisterForm from "@/components/auth/RegisterForm";
 
+export const metadata = {
+  title: "Register",
+};
+
 export default function RegisterPage() {
   return (
-    <main className="container mx-auto flex min-h-screen max-w-md items-center justify-center px-6">
+    <main className='container mx-auto flex min-h-screen max-w-md items-center justify-center px-6'>
       <RegisterForm />
     </main>
   );
