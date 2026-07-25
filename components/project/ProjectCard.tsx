@@ -1,5 +1,5 @@
 import TechStackBadge from "./TechStackBadge";
-
+import Image from "next/image";
 interface ProjectCardProps {
   title: string;
   description: string;
@@ -16,7 +16,13 @@ export default function ProjectCard({
   return (
     <article className='overflow-hidden rounded-xl border bg-white shadow-sm'>
       {imageUrl && (
-        <img src={imageUrl} alt={title} className='h-48 w-full object-cover' />
+        <Image
+          src={imageUrl}
+          alt={title}
+          width={600}
+          height={300}
+          className='h-48 w-full object-cover'
+        />
       )}
 
       <div className='space-y-4 p-6'>
