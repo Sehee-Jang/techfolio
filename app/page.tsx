@@ -1,5 +1,9 @@
 import ProjectGrid from "@/components/project/ProjectGrid";
 
+export const metadata = {
+  title: "Home",
+};
+
 const projects = [
   {
     id: "1",

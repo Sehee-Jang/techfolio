@@ -1,8 +1,12 @@
 import LoginForm from "@/components/auth/LoginForm";
 
+export const metadata = {
+  title: "Login",
+};
+
 export default function LoginPage() {
   return (
-    <main className="mx-auto flex min-h-screen max-w-md items-center px-6">
+    <main className='mx-auto flex min-h-screen max-w-md items-center px-6'>
       <LoginForm />
     </main>
   );
