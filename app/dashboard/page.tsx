@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
-
+import { Button } from "@/components/ui/button";
+import ProjectGrid from "@/components/project/ProjectGrid";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import ProjectGrid from "@/components/project/ProjectGrid";
 
@@ -45,11 +47,43 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  return (
-    <main className='container mx-auto max-w-7xl p-6'>
-      <h1 className='text-3xl font-bold'>Dashboard</h1>
+  const { data: projects, error } = await supabase
+    .from("projects")
+    .select("*")
+    .order("created_at", { ascending: false });
 
-      <p className='mt-2 text-muted-foreground'>Welcome, {user.email}</p>
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return (
+    <main className="container mx-auto max-w-7xl space-y-8 p-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Dashboard</h1>
+
+          <p className="text-muted-foreground">
+            Welcome, {user.email}
+          </p>
+        </div>
+
+        <Link href="/dashboard/projects/new">
+          <Button>
+              New Project
+          </Button>
+        </Link>
+      </div>
+
+      {projects && projects.length > 0 ? (
+        <ProjectGrid projects={projects} />
+        ) : (
+        <div className="rounded-lg border border-dashed p-12 text-center">
+          <h2 className="text-xl font-semibold">No projects yet</h2>
+          <p className="mt-2 text-muted-foreground">
+            Create your first portfolio project.
+          </p>
+        </div>
+      )}
 
       <section className='mt-8'>
         <ProjectGrid projects={projects} />
