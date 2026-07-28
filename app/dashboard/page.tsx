@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import ProjectGrid from "@/components/project/ProjectGrid";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
-import ProjectGrid from "@/components/project/ProjectGrid";
 
 export const metadata = {
   title: "Dashboard",
