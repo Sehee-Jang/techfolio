@@ -1,7 +1,7 @@
 export interface Project {
   id: string;
   title: string;
-  description: string;
+  description: string | null;
   readme: string | null;
   github_url: string | null;
   demo_url: string | null;

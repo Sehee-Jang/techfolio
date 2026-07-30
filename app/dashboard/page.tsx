@@ -8,33 +8,6 @@ export const metadata = {
   title: "Dashboard",
 };
 
-const projects = [
-  {
-    id: "1",
-    title: "Techfolio",
-    description: "Developer portfolio management application",
-    readme: "Project README content",
-    github_url: "https://github.com/example/techfolio",
-    demo_url: "https://example.com",
-    image_url: "/placeholder.png",
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    user_id: "temp-user",
-  },
-  {
-    id: "2",
-    title: "Wedding Invitation",
-    description: "A mobile wedding invitation project.",
-    readme: "Project README content",
-    github_url: "https://github.com/example/techfolio",
-    demo_url: "https://example.com",
-    image_url: "/placeholder.png",
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    user_id: "temp-user",
-  },
-];
-
 export default async function DashboardPage() {
   const supabase = await createServerSupabaseClient();
 
@@ -49,6 +22,7 @@ export default async function DashboardPage() {
   const { data: projects, error } = await supabase
     .from("projects")
     .select("*")
+    .eq("user_id", user.id)
     .order("created_at", { ascending: false });
 
   if (error) {
