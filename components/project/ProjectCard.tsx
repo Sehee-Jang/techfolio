@@ -1,40 +1,27 @@
-import TechStackBadge from "./TechStackBadge";
+import { Project } from "@/types/project";
 import Image from "next/image";
+
 interface ProjectCardProps {
-  title: string;
-  description: string;
-  imageUrl?: string;
-  technologies?: string[];
+  project: Project;
 }
 
-export default function ProjectCard({
-  title,
-  description,
-  imageUrl,
-  technologies = [],
-}: ProjectCardProps) {
+export default function ProjectCard({ project }: ProjectCardProps) {
   return (
     <article className='overflow-hidden rounded-xl border bg-white shadow-sm'>
-      {imageUrl && (
-        <Image
-          src={imageUrl}
-          alt={title}
-          width={600}
-          height={300}
-          className='h-48 w-full object-cover'
-        />
-      )}
+      <Image
+        src={project.image_url ?? "/placeholder.png"}
+        alt={project.title}
+        width={600}
+        height={300}
+        className='h-48 w-full object-cover'
+      />
 
       <div className='space-y-4 p-6'>
-        <h2 className='text-xl font-semibold'>{title}</h2>
+        <h2 className='text-xl font-semibold'>{project.title}</h2>
 
-        <p className='text-sm text-slate-600'>{description}</p>
-
-        <div className='flex flex-wrap gap-2'>
-          {technologies.map((technology) => (
-            <TechStackBadge key={technology} name={technology} />
-          ))}
-        </div>
+        <p className='text-sm text-slate-600'>
+          {project.description ?? "No description available."}
+        </p>
       </div>
     </article>
   );
