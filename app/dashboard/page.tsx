@@ -57,10 +57,6 @@ export default async function DashboardPage() {
           </p>
         </div>
       )}
-
-      <section className='mt-8'>
-        <ProjectGrid projects={projects} />
-      </section>
     </main>
   );
 }
