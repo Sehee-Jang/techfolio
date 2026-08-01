@@ -20,8 +20,28 @@ export async function createProject(formData: FormData) {
   const description = formData.get("description") as string;
   const github_url = formData.get("github_url") as string;
   const demo_url = formData.get("demo_url") as string;
-  const image_url = formData.get("image_url") as string;
+  const image = formData.get("image") as File;
   const readme = formData.get("readme") as string;
+
+  let image_url = null;
+
+  if (image && image.size > 0) {
+    const fileName = `${user.id}/${Date.now()}-${image.name}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("project-images")
+      .upload(fileName, image);
+
+    if (uploadError) {
+      throw new Error(uploadError.message);
+    }
+
+    const { data } = supabase.storage
+      .from("project-images")
+      .getPublicUrl(fileName);
+
+    image_url = data.publicUrl;
+  }
 
   const { error } = await supabase.from("projects").insert({
     title,
@@ -41,15 +61,12 @@ export async function createProject(formData: FormData) {
   redirect("/dashboard");
 }
 
-export async function updateProject(
-    id: string,
-    formData: FormData
-) {
+export async function updateProject(id: string, formData: FormData) {
   const supabase = await createServerSupabaseClient();
 
   const {
     data: { user },
-  } = await supabase.auth.getUser();  
+  } = await supabase.auth.getUser();
 
   if (!user) {
     throw new Error("Unauthorized");
@@ -84,8 +101,8 @@ export async function updateProject(
 }
 
 export async function deleteProject(id: string) {
-  const supabase = await createServerSupabaseClient();  
-  
+  const supabase = await createServerSupabaseClient();
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -107,4 +124,3 @@ export async function deleteProject(id: string) {
   revalidatePath("/dashboard");
   redirect("/dashboard");
 }
-
