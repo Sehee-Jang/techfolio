@@ -5,20 +5,12 @@ interface DeleteButtonProps {
   id: string;
 }
 
-export default function DeleteButton({
-  id,
-}: DeleteButtonProps) {
+export default function DeleteButton({ id }: DeleteButtonProps) {
+  const deleteProjectWithId = deleteProject.bind(null, id);
+
   return (
-    <form
-      action={async () => {
-        "use server";
-        await deleteProject(id);
-      }}
-    >
-      <Button
-        type="submit"
-        variant="destructive"
-      >
+    <form action={deleteProjectWithId}>
+      <Button type='submit' variant='destructive'>
         Delete
       </Button>
     </form>

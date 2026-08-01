@@ -26,7 +26,9 @@ export async function createProject(formData: FormData) {
   let image_url = null;
 
   if (image && image.size > 0) {
-    const fileName = `${user.id}/${Date.now()}-${image.name}`;
+    const fileExtension = image.name.split(".").pop();
+
+    const fileName = `${user.id}/${crypto.randomUUID()}.${fileExtension}`;
 
     const { error: uploadError } = await supabase.storage
       .from("project-images")
@@ -76,9 +78,52 @@ export async function updateProject(id: string, formData: FormData) {
   const description = formData.get("description") as string;
   const github_url = formData.get("github_url") as string;
   const demo_url = formData.get("demo_url") as string;
-  const image_url = formData.get("image_url") as string;
   const readme = formData.get("readme") as string;
 
+  /**
+   * Get existing image_url
+   */
+  const { data: existingProject, error: fetchError } = await supabase
+    .from("projects")
+    .select("image_url")
+    .eq("id", id)
+    .eq("user_id", user.id)
+    .single();
+
+  if (fetchError) {
+    throw new Error(fetchError.message);
+  }
+
+  let image_url = existingProject.image_url;
+
+  /**
+   * Upload new image
+   */
+  const image = formData.get("image") as File;
+
+  if (image && image.size > 0) {
+    const fileExtension = image.name.split(".").pop();
+
+    const fileName = `${user.id}/${crypto.randomUUID()}.${fileExtension}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("project-images")
+      .upload(fileName, image);
+
+    if (uploadError) {
+      throw new Error(uploadError.message);
+    }
+
+    const { data } = supabase.storage
+      .from("project-images")
+      .getPublicUrl(fileName);
+
+    image_url = data.publicUrl;
+  }
+
+  /**
+   * Update the project
+   */
   const { error } = await supabase
     .from("projects")
     .update({
@@ -86,11 +131,11 @@ export async function updateProject(id: string, formData: FormData) {
       description: description || null,
       github_url: github_url || null,
       demo_url: demo_url || null,
-      image_url: image_url || null,
+      image_url,
       readme: readme || null,
     })
     .eq("id", id)
-    .eq("user_id", user?.id);
+    .eq("user_id", user.id);
 
   if (error) {
     throw new Error(error.message);
