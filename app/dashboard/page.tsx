@@ -1,33 +1,22 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import ProjectGrid from "@/components/project/ProjectGrid";
-import { createServerSupabaseClient } from "@/lib/supabase-server";
+import { getProjectsByUser } from "@/lib/projects";
+import { getCurrentUser } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Dashboard",
 };
 
 export default async function DashboardPage() {
-  const supabase = await createServerSupabaseClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect("/login");
   }
 
-  const { data: projects, error } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    throw new Error(error.message);
-  }
+  const projects = await getProjectsByUser(user.id);
 
   return (
     <main className='min-h-screen bg-slate-50'>

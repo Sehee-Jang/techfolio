@@ -2,15 +2,17 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-
+import {
+  saveProjectTechStacks,
+  uploadProjectImage,
+} from "@/lib/project-service";
+import { getCurrentUser } from "@/lib/auth";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 
 export async function createProject(formData: FormData) {
   const supabase = await createServerSupabaseClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     throw new Error("Unauthorized");
@@ -23,41 +25,29 @@ export async function createProject(formData: FormData) {
   const image = formData.get("image") as File;
   const readme = formData.get("readme") as string;
 
-  let image_url = null;
+  const image_url = await uploadProjectImage(user.id, image);
 
-  if (image && image.size > 0) {
-    const fileExtension = image.name.split(".").pop();
-
-    const fileName = `${user.id}/${crypto.randomUUID()}.${fileExtension}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from("project-images")
-      .upload(fileName, image);
-
-    if (uploadError) {
-      throw new Error(uploadError.message);
-    }
-
-    const { data } = supabase.storage
-      .from("project-images")
-      .getPublicUrl(fileName);
-
-    image_url = data.publicUrl;
-  }
-
-  const { error } = await supabase.from("projects").insert({
-    title,
-    description: description || null,
-    github_url: github_url || null,
-    demo_url: demo_url || null,
-    image_url: image_url || null,
-    readme: readme || null,
-    user_id: user.id,
-  });
+  const { data: project, error } = await supabase
+    .from("projects")
+    .insert({
+      title,
+      description: description || null,
+      github_url: github_url || null,
+      demo_url: demo_url || null,
+      image_url,
+      readme: readme || null,
+      user_id: user.id,
+    })
+    .select()
+    .single();
 
   if (error) {
     throw new Error(error.message);
   }
+
+  const techIds = formData.getAll("tech_ids") as string[];
+
+  await saveProjectTechStacks(project.id, techIds);
 
   revalidatePath("/dashboard");
   redirect("/dashboard");
@@ -66,9 +56,7 @@ export async function createProject(formData: FormData) {
 export async function updateProject(id: string, formData: FormData) {
   const supabase = await createServerSupabaseClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     throw new Error("Unauthorized");
@@ -102,23 +90,7 @@ export async function updateProject(id: string, formData: FormData) {
   const image = formData.get("image") as File;
 
   if (image && image.size > 0) {
-    const fileExtension = image.name.split(".").pop();
-
-    const fileName = `${user.id}/${crypto.randomUUID()}.${fileExtension}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from("project-images")
-      .upload(fileName, image);
-
-    if (uploadError) {
-      throw new Error(uploadError.message);
-    }
-
-    const { data } = supabase.storage
-      .from("project-images")
-      .getPublicUrl(fileName);
-
-    image_url = data.publicUrl;
+    image_url = await uploadProjectImage(user.id, image);
   }
 
   /**
@@ -141,6 +113,10 @@ export async function updateProject(id: string, formData: FormData) {
     throw new Error(error.message);
   }
 
+  const techIds = formData.getAll("tech_ids") as string[];
+
+  await saveProjectTechStacks(id, techIds);
+
   revalidatePath("/dashboard");
   redirect("/dashboard");
 }
@@ -148,9 +124,7 @@ export async function updateProject(id: string, formData: FormData) {
 export async function deleteProject(id: string) {
   const supabase = await createServerSupabaseClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     throw new Error("Unauthorized");

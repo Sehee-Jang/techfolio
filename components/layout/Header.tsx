@@ -1,16 +1,10 @@
 import Link from "next/link";
-
-import { createServerSupabaseClient } from "@/lib/supabase-server";
-
-import LogoutButton from "@/components/auth/LogoutButton";
 import Image from "next/image";
+import LogoutButton from "@/components/auth/LogoutButton";
+import { getCurrentUser } from "@/lib/auth";
 
 export default async function Header() {
-  const supabase = await createServerSupabaseClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   return (
     <header className='border-b bg-background'>

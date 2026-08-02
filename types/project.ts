@@ -1,3 +1,13 @@
+export interface TechStack {
+  id: string;
+  name: string;
+  color: string | null;
+}
+
+export interface ProjectTech {
+  tech_stacks: TechStack;
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -9,4 +19,6 @@ export interface Project {
   created_at: string;
   updated_at: string;
   user_id: string;
+
+  project_tech?: ProjectTech[];
 }

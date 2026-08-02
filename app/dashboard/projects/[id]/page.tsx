@@ -1,7 +1,8 @@
-import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { createServerSupabaseClient } from "@/lib/supabase-server";
+import { notFound, redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth";
+import { getProjectById } from "@/lib/projects";
 
 interface Props {
   params: Promise<{
@@ -12,20 +13,13 @@ interface Props {
 export default async function ProjectDetailPage({ params }: Props) {
   const { id } = await params;
 
-  const supabase = await createServerSupabaseClient();
+  const user = await getCurrentUser();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  if (!user) {
+    redirect("/login");
+  }
 
-  if (!user) notFound();
-
-  const { data: project } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("id", id)
-    .eq("user_id", user.id)
-    .single();
+  const project = await getProjectById(id, user.id).catch(() => null);
 
   if (!project) notFound();
 
