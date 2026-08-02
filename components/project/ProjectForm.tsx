@@ -13,6 +13,9 @@ export default async function ProjectForm({
   project,
   techStacks,
 }: ProjectFormProps) {
+  const selectedTechIds =
+    project?.project_tech?.map((item) => item.tech_stacks.id) ?? [];
+
   return (
     <form action={action} className='space-y-6'>
       <div className='space-y-2'>
@@ -86,7 +89,12 @@ export default async function ProjectForm({
         <div className='grid grid-cols-2 gap-2'>
           {techStacks.map((tech) => (
             <label key={tech.id} className='flex items-center gap-2'>
-              <input type='checkbox' name='tech_ids' value={tech.id} />
+              <input
+                type='checkbox'
+                name='tech_ids'
+                value={tech.id}
+                defaultChecked={selectedTechIds.includes(tech.id)}
+              />
               {tech.name}
             </label>
           ))}
