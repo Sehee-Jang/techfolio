@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
 import { Project } from "@/types/project";
 
 interface ProjectFormProps {
@@ -37,7 +36,7 @@ export default function ProjectForm({ action, project }: ProjectFormProps) {
           name='description'
           rows={4}
           defaultValue={project?.description ?? ""}
-          className='w-full rounded-md border p-3'
+          className='w-full rounded-md border bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-primary'
           placeholder='Brief description of your project...'
         />
       </div>
@@ -88,7 +87,7 @@ export default function ProjectForm({ action, project }: ProjectFormProps) {
           name='readme'
           rows={10}
           defaultValue={project?.readme ?? ""}
-          className='w-full rounded-md border p-3 font-mono text-sm'
+          className='min-h-[250px] w-full rounded-md border p-4 font-mono text-sm'
           placeholder='Write your project README...'
         />
       </div>

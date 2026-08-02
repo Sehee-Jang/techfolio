@@ -10,7 +10,7 @@ export default function DeleteButton({ id }: DeleteButtonProps) {
 
   return (
     <form action={deleteProjectWithId}>
-      <Button type='submit' variant='destructive'>
+      <Button size='sm' variant='destructive'>
         Delete
       </Button>
     </form>

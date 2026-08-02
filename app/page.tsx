@@ -1,9 +1,6 @@
-import ProjectGrid from "@/components/project/ProjectGrid";
-
 export const metadata = {
   title: "Home",
 };
-
 
 export default function Home() {
   return (
@@ -14,7 +11,6 @@ export default function Home() {
         <p className='mt-4 text-slate-600'>
           Showcase your development projects.
         </p>
-
       </section>
     </main>
   );
