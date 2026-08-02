@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getProjectById } from "@/lib/projects";
+import TechStackBadge from "@/components/project/TechStackBadge";
 
 interface Props {
   params: Promise<{
@@ -23,6 +24,8 @@ export default async function ProjectDetailPage({ params }: Props) {
 
   if (!project) notFound();
 
+  console.log(project);
+
   return (
     <main className='min-h-screen bg-slate-50 py-10'>
       <div className='container mx-auto max-w-4xl space-y-8 rounded-xl bg-white p-8 shadow-sm'>
@@ -41,6 +44,22 @@ export default async function ProjectDetailPage({ params }: Props) {
 
           <p className='mt-4 text-muted-foreground'>{project.description}</p>
         </div>
+
+        {project.project_tech && project.project_tech.length > 0 && (
+          <section>
+            <h2 className='mb-3 text-xl font-semibold'>Tech Stack</h2>
+
+            <div className='flex flex-wrap gap-2'>
+              {project.project_tech.map((item) => (
+                <TechStackBadge
+                  key={item.tech_stacks.id}
+                  name={item.tech_stacks.name}
+                  color={item.tech_stacks.color}
+                />
+              ))}
+            </div>
+          </section>
+        )}
 
         <div className='flex gap-4'>
           {project.github_url && (

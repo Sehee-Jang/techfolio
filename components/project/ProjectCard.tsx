@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import DeleteButton from "./DeleteButton";
 import { Button } from "@/components/ui/button";
+
 interface ProjectCardProps {
   project: Project;
 }

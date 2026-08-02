@@ -1,6 +1,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase-server";
+import { Project } from "@/types/project";
 
-export async function getProjectsByUser(userId: string) {
+export async function getProjectsByUser(userId: string): Promise<Project[]> {
   const supabase = await createServerSupabaseClient();
 
   const { data, error } = await supabase
@@ -27,7 +28,10 @@ export async function getProjectsByUser(userId: string) {
   return data;
 }
 
-export async function getProjectById(id: string, userId: string) {
+export async function getProjectById(
+  id: string,
+  userId: string,
+): Promise<Project> {
   const supabase = await createServerSupabaseClient();
 
   const { data, error } = await supabase
