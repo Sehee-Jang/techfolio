@@ -1,6 +1,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase-server";
+import { TechStack } from "@/types/project";
 
-export async function getTechStacks() {
+export async function getTechStacks(): Promise<TechStack[]> {
   const supabase = await createServerSupabaseClient();
 
   const { data, error } = await supabase

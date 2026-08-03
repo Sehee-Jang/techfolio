@@ -1,9 +1,8 @@
 import { notFound, redirect } from "next/navigation";
 import ProjectForm from "@/components/project/ProjectForm";
 import { updateProject } from "@/lib/actions/project";
-import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { getTechStacks } from "@/lib/tech-stacks";
-import { getProjectById } from "@/lib/projects";
+import { getProjectById, getProjectTitleById } from "@/lib/projects";
 import { getCurrentUser } from "@/lib/auth";
 
 type Props = {
@@ -15,16 +14,10 @@ type Props = {
 export async function generateMetadata({ params }: Props) {
   const { id } = await params;
 
-  const supabase = await createServerSupabaseClient();
-
-  const { data: project } = await supabase
-    .from("projects")
-    .select("title")
-    .eq("id", id)
-    .single();
+  const title = await getProjectTitleById(id);
 
   return {
-    title: project ? `Edit ${project.title}` : "Edit Project",
+    title: title ? `Edit ${title}` : "Edit Project",
   };
 }
 
