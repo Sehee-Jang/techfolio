@@ -24,7 +24,7 @@ export async function createProject(formData: FormData) {
   const demo_url = formData.get("demo_url") as string;
   const image = formData.get("image") as File;
   const readme = formData.get("readme") as string;
-
+  const is_public = formData.get("is_public") === "on";
   const image_url = await uploadProjectImage(user.id, image);
 
   const { data: project, error } = await supabase
@@ -37,6 +37,7 @@ export async function createProject(formData: FormData) {
       image_url,
       readme: readme || null,
       user_id: user.id,
+      is_public,
     })
     .select()
     .single();
@@ -67,6 +68,7 @@ export async function updateProject(id: string, formData: FormData) {
   const github_url = formData.get("github_url") as string;
   const demo_url = formData.get("demo_url") as string;
   const readme = formData.get("readme") as string;
+  const is_public = formData.get("is_public") === "on";
 
   /**
    * Get existing image_url
@@ -105,6 +107,7 @@ export async function updateProject(id: string, formData: FormData) {
       demo_url: demo_url || null,
       image_url,
       readme: readme || null,
+      is_public,
     })
     .eq("id", id)
     .eq("user_id", user.id);

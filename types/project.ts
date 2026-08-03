@@ -19,6 +19,14 @@ export interface Project {
   created_at: string;
   updated_at: string;
   user_id: string;
-
+  is_public: boolean;
   project_tech?: ProjectTech[];
+}
+
+export interface Portfolio {
+  id: string;
+  username: string;
+  bio: string | null;
+  avatar_url: string | null;
+  projects: Project[];
 }

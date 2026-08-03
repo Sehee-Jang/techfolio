@@ -7,12 +7,18 @@ import { Button } from "@/components/ui/button";
 
 interface ProjectCardProps {
   project: Project;
+  showActions?: boolean;
+  href?: string;
 }
 
-export default function ProjectCard({ project }: ProjectCardProps) {
+export default function ProjectCard({
+  project,
+  showActions,
+  href = `/dashboard/projects/${project.id}`,
+}: ProjectCardProps) {
   return (
     <article className='group flex h-full flex-col overflow-hidden rounded-xl border bg-white shadow-sm transition hover:shadow-md'>
-      <Link href={`/dashboard/projects/${project.id}`}>
+      <Link href={href}>
         <Image
           src={project.image_url ?? "/placeholder.png"}
           alt={project.title}
@@ -42,15 +48,17 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         </div>
       </Link>
 
-      <div className='flex gap-2 border-t px-6 py-4'>
-        <Link href={`/dashboard/projects/${project.id}/edit`}>
-          <Button size='sm' variant='outline'>
-            Edit
-          </Button>
-        </Link>
+      {showActions && (
+        <div className='flex gap-2 border-t px-6 py-4'>
+          <Link href={`/dashboard/projects/${project.id}/edit`}>
+            <Button size='sm' variant='outline'>
+              Edit
+            </Button>
+          </Link>
 
-        <DeleteButton id={project.id} />
-      </div>
+          <DeleteButton id={project.id} />
+        </div>
+      )}
     </article>
   );
 }
