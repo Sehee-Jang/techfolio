@@ -116,6 +116,21 @@ export default async function ProjectForm({
         />
       </div>
 
+      <div className='space-y-2'>
+        <label className='flex items-center gap-2 text-sm font-medium'>
+          <input
+            type='checkbox'
+            name='is_public'
+            defaultChecked={project?.is_public ?? false}
+          />
+          Show on public portfolio
+        </label>
+
+        <p className='text-sm text-muted-foreground'>
+          Public projects will appear on your portfolio page.
+        </p>
+      </div>
+
       <Button type='submit'>
         {project ? "Update Project" : "Create Project"}
       </Button>

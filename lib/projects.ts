@@ -1,7 +1,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { Project } from "@/types/project";
 
-const PROJECT_SELECT = `
+export const PROJECT_SELECT = `
   *,
   project_tech (
     tech_stacks (
