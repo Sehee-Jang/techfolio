@@ -1,15 +1,21 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Project } from "@/types/project";
+import { Project, TechStack } from "@/types/project";
 
 interface ProjectFormProps {
   action: (formData: FormData) => void | Promise<void>;
   project?: Project;
+  techStacks: TechStack[];
 }
 
-export default function ProjectForm({ action, project }: ProjectFormProps) {
+export default async function ProjectForm({
+  action,
+  project,
+  techStacks,
+}: ProjectFormProps) {
+  const selectedTechIds =
+    project?.project_tech?.map((item) => item.tech_stacks.id) ?? [];
+
   return (
     <form action={action} className='space-y-6'>
       <div className='space-y-2'>
@@ -75,6 +81,24 @@ export default function ProjectForm({ action, project }: ProjectFormProps) {
         </label>
 
         <Input id='image' name='image' type='file' accept='image/*' />
+      </div>
+
+      <div className='space-y-2'>
+        <label className='text-sm font-medium'>Tech Stacks</label>
+
+        <div className='grid grid-cols-2 gap-2'>
+          {techStacks.map((tech) => (
+            <label key={tech.id} className='flex items-center gap-2'>
+              <input
+                type='checkbox'
+                name='tech_ids'
+                value={tech.id}
+                defaultChecked={selectedTechIds.includes(tech.id)}
+              />
+              {tech.name}
+            </label>
+          ))}
+        </div>
       </div>
 
       <div className='space-y-2'>

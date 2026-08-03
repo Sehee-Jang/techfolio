@@ -1,14 +1,14 @@
 interface TechStackBadgeProps {
   name: string;
-  color?: string;
+  color: string | null;
 }
 
 export default function TechStackBadge({ name, color }: TechStackBadgeProps) {
   return (
     <span
-      className='rounded-full px-3 py-1 text-sm font-medium'
+      className='rounded-full px-3 py-1 text-sm font-medium text-white'
       style={{
-        backgroundColor: color ?? "#E2E8F0",
+        backgroundColor: color ?? "#64748B",
       }}
     >
       {name}

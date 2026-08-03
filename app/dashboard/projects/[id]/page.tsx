@@ -1,7 +1,9 @@
-import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { createServerSupabaseClient } from "@/lib/supabase-server";
+import { notFound, redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth";
+import { getProjectById } from "@/lib/projects";
+import TechStackBadge from "@/components/project/TechStackBadge";
 
 interface Props {
   params: Promise<{
@@ -12,22 +14,17 @@ interface Props {
 export default async function ProjectDetailPage({ params }: Props) {
   const { id } = await params;
 
-  const supabase = await createServerSupabaseClient();
+  const user = await getCurrentUser();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  if (!user) {
+    redirect("/login");
+  }
 
-  if (!user) notFound();
-
-  const { data: project } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("id", id)
-    .eq("user_id", user.id)
-    .single();
+  const project = await getProjectById(id, user.id).catch(() => null);
 
   if (!project) notFound();
+
+  console.log(project);
 
   return (
     <main className='min-h-screen bg-slate-50 py-10'>
@@ -47,6 +44,22 @@ export default async function ProjectDetailPage({ params }: Props) {
 
           <p className='mt-4 text-muted-foreground'>{project.description}</p>
         </div>
+
+        {project.project_tech && project.project_tech.length > 0 && (
+          <section>
+            <h2 className='mb-3 text-xl font-semibold'>Tech Stack</h2>
+
+            <div className='flex flex-wrap gap-2'>
+              {project.project_tech.map((item) => (
+                <TechStackBadge
+                  key={item.tech_stacks.id}
+                  name={item.tech_stacks.name}
+                  color={item.tech_stacks.color}
+                />
+              ))}
+            </div>
+          </section>
+        )}
 
         <div className='flex gap-4'>
           {project.github_url && (
