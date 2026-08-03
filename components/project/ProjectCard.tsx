@@ -8,15 +8,17 @@ import { Button } from "@/components/ui/button";
 interface ProjectCardProps {
   project: Project;
   showActions?: boolean;
+  href?: string;
 }
 
 export default function ProjectCard({
   project,
   showActions,
+  href = `/dashboard/projects/${project.id}`,
 }: ProjectCardProps) {
   return (
     <article className='group flex h-full flex-col overflow-hidden rounded-xl border bg-white shadow-sm transition hover:shadow-md'>
-      <Link href={`/dashboard/projects/${project.id}`}>
+      <Link href={href}>
         <Image
           src={project.image_url ?? "/placeholder.png"}
           alt={project.title}

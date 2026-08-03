@@ -50,7 +50,13 @@ export default async function PublicPortfolioPage({ params }: Props) {
           <h2 className='mb-6 text-2xl font-bold'>Projects</h2>
 
           {portfolio.projects.length > 0 ? (
-            <ProjectGrid projects={portfolio.projects} showActions={false} />
+            <ProjectGrid
+              projects={portfolio.projects}
+              showActions={false}
+              hrefBuilder={(project) =>
+                `/portfolio/${username}/projects/${project.id}`
+              }
+            />
           ) : (
             <div className='rounded-xl border border-dashed bg-white p-12 text-center'>
               <h3 className='text-lg font-semibold'>No projects available</h3>
