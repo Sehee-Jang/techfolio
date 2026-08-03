@@ -6,7 +6,7 @@ interface TechStackBadgeProps {
 export default function TechStackBadge({ name, color }: TechStackBadgeProps) {
   return (
     <span
-      className='rounded-full px-3 py-1 text-sm font-medium text-white'
+      className='whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium text-white'
       style={{
         backgroundColor: color ?? "#64748B",
       }}
