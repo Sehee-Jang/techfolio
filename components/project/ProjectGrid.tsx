@@ -8,7 +8,7 @@ interface ProjectGridProps {
 
 export default function ProjectGrid({
   projects,
-  showActions = true,
+  showActions,
 }: ProjectGridProps) {
   return (
     <section className='grid gap-8 sm:grid-cols-2 xl:grid-cols-3'>

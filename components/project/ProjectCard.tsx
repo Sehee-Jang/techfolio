@@ -12,7 +12,7 @@ interface ProjectCardProps {
 
 export default function ProjectCard({
   project,
-  showActions = true,
+  showActions,
 }: ProjectCardProps) {
   return (
     <article className='group flex h-full flex-col overflow-hidden rounded-xl border bg-white shadow-sm transition hover:shadow-md'>
