@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props) {
     const portfolio = await getPublicPortfolio(username);
 
     return {
-      title: `${portfolio.username}'s Portfolio`,
+      title: `${portfolio.username}&apos;s Portfolio`,
     };
   } catch {
     return {
@@ -38,7 +38,7 @@ export default async function PublicPortfolioPage({ params }: Props) {
       <div className='container mx-auto max-w-7xl space-y-10 p-6'>
         <section className='rounded-xl bg-white p-8 text-center shadow-sm'>
           <h1 className='text-4xl font-bold'>
-            {portfolio.username}'s Portfolio
+            {portfolio.username}&apos;s Portfolio
           </h1>
 
           {portfolio.bio && (
