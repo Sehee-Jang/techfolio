@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import LogoutButton from "@/components/auth/LogoutButton";
 import { getCurrentUser } from "@/lib/auth";
+import { Button } from "../ui/button";
 
 export default async function Header() {
   const user = await getCurrentUser();
@@ -27,6 +28,13 @@ export default async function Header() {
                 className='text-sm font-medium text-muted-foreground transition-colors hover:text-foreground'
               >
                 Dashboard
+              </Link>
+
+              <Link
+                href='/dashboard/profile'
+                className='text-sm font-medium text-muted-foreground transition-colors hover:text-foreground'
+              >
+                My Profile
               </Link>
 
               <LogoutButton />
