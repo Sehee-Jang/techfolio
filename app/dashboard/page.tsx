@@ -1,15 +1,8 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { getProfile } from "@/lib/profile";
 import { getProjectsByUser } from "@/lib/projects";
 import { getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import {
-  FolderKanban,
-  Link as LinkIcon,
-  ExternalLink,
-  Copy,
-} from "lucide-react";
+import { FolderKanban } from "lucide-react";
 import ProjectGrid from "@/components/project/ProjectGrid";
 import PortfolioLink from "@/components/dashboard/PortfolioLink";
 
@@ -47,39 +40,16 @@ export default async function DashboardPage() {
           </div>
         </section>
 
-        <div className='flex justify-center'>
-          <Link href='/dashboard/projects/new'>
-            <Button size='lg'>+ New Project</Button>
-          </Link>
-        </div>
+        <section>
+          <div className='mb-6 flex items-center justify-between'>
+            <h2 className='text-2xl font-semibold'>Your Projects</h2>
 
-        {projects.length > 0 ? (
-          <section>
-            <div className='mb-6 flex items-center justify-between'>
-              <h2 className='text-2xl font-semibold'>Your Projects</h2>
-
-              <span className='text-sm text-muted-foreground'>
-                {projects.length}{" "}
-                {projects.length === 1 ? "project" : "projects"}
-              </span>
-            </div>
-            <ProjectGrid projects={projects} />
-          </section>
-        ) : (
-          <section className='rounded-xl border border-dashed bg-white p-12 text-center'>
-            <FolderKanban className='mx-auto h-12 w-12 text-muted-foreground' />
-
-            <h2 className='mt-4 text-xl font-semibold'>No projects yet</h2>
-
-            <p className='mt-2 text-muted-foreground'>
-              Create your first portfolio project and showcase your work.
-            </p>
-
-            <Link href='/dashboard/projects/new'>
-              <Button className='mt-6'>Create Project</Button>
-            </Link>
-          </section>
-        )}
+            <span className='text-sm text-muted-foreground'>
+              {projects.length} {projects.length === 1 ? "project" : "projects"}
+            </span>
+          </div>
+          <ProjectGrid projects={projects} showNewCard />
+        </section>
       </div>
     </main>
   );
